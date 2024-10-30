@@ -16,7 +16,10 @@ BUILD_SCRIPT_PATH=$(dirname $(realpath -s $BASH_SOURCE))
 
 # Installer les dépendances nécessaires
 sudo apt update
-sudo apt install --yes git
+sudo apt install --yes git python3-pip
+
+# Installer la bibliothèque GitPython
+pip3 install GitPython
 
 # Créer un fichier temporaire pour la configuration de la carte
 export EXTRA_BOARD_CONFIG=$(mktemp)
