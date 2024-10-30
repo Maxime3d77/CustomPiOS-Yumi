@@ -1,30 +1,46 @@
 #!/usr/bin/env bash
 
 set -e
-
 set -x
 
+# Définir le fichier de log
 [ -n "$LOG" ] || LOG="build.log"
 
-define(){ IFS='\n' read -r -d '' ${1} || true; }
+# Fonction pour définir une variable à partir d'un bloc de texte
+define() { IFS='\n' read -r -d '' ${1} || true; }
 
+# Définir le script à exécuter
 define SCRIPT <<'EOF'
+# Chemin du script de construction
 BUILD_SCRIPT_PATH=$(dirname $(realpath -s $BASH_SOURCE))
+
+# Installer les dépendances nécessaires
+sudo apt update
+sudo apt install --yes git
+
+# Créer un fichier temporaire pour la configuration de la carte
 export EXTRA_BOARD_CONFIG=$(mktemp)
+
+# Exécuter le script Python pour générer la configuration de la carte
 ${BUILD_SCRIPT_PATH}/custompios_core/generate_board_config.py "${EXTRA_BOARD_CONFIG}"
 echo "Temp source file: ${EXTRA_BOARD_CONFIG}"
 
+# Charger les fonctions communes
 source ${BUILD_SCRIPT_PATH}/common.sh
 install_cleanup_trap
 
+# Chemin du système d'exploitation personnalisé
 CUSTOM_OS_PATH=$(dirname $(realpath -s $0))
 
+# Source des configurations
 source ${CUSTOM_PI_OS_PATH}/config "${1}" "${EXTRA_BOARD_CONFIG}" ${@}
 ${CUSTOM_PI_OS_PATH}/config_sanity
 
+# Exécuter le script de construction principal si CONFIG_ONLY n'est pas "yes"
 [ "$CONFIG_ONLY" == "yes" ] || source ${CUSTOM_OS_PATH}/custompios ${@}
 EOF
 
+# Gérer les logs
 if [ "$LOG" != "no" ]; then
     touch "$LOG"
     chmod 666 "$LOG"
