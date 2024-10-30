@@ -25,4 +25,3 @@ if __name__ == "__main__":
     with open(args.output_script, "w+") as w:
         for key in env.keys():
             w.write(f'export {key}="{env[key]}"\n')
-        
