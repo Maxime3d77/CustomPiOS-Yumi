@@ -24,12 +24,12 @@ sudo apt-mark hold linux-headers-current-sunxi
 apt-get update --allow-releaseinfo-change
 
 ### Pre Update Section
-if [ "${PKGUPGRADE_DISTUPGRADE}" = "y" ]; then
-  echo_green "Performing 'apt-get ${PKGUPGRADE_DISTUPGRADE_METHOD}' ... "
-  apt-get ${PKGUPGRADE_DISTUPGRADE_METHOD} -y
-else
-  echo_green "Skipping Dist Upgrade ['apt-get ${PKGUPGRADE_DISTUPGRADE_METHOD}']."
-fi
+#if [ "${PKGUPGRADE_DISTUPGRADE}" = "y" ]; then
+#  echo_green "Performing 'apt-get ${PKGUPGRADE_DISTUPGRADE_METHOD}' ... "
+#  apt-get ${PKGUPGRADE_DISTUPGRADE_METHOD} -y
+#else
+#  echo_green "Skipping Dist Upgrade ['apt-get ${PKGUPGRADE_DISTUPGRADE_METHOD}']."
+#fi
 
 ### Pre Installer Section
 # Make sure Cache is fresh
